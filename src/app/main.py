@@ -55,8 +55,8 @@ def create_app() -> FastAPI:
         title="User Registration API",
         description="User registration with email verification",
         version="1.0.0",
-        docs_url="/docs" if settings.is_local else None,
-        redoc_url="/redoc" if settings.is_local else None,
+        docs_url="/docs",
+        redoc_url="/redoc",
         openapi_url="/openapi.json",
         lifespan=lifespan,
     )
