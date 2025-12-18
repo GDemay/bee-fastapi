@@ -30,14 +30,17 @@ COPY alembic/ ./alembic/
 RUN uv sync --no-dev --no-install-project
 
 COPY src/ ./src/
+COPY start.sh ./
 
-RUN adduser --disabled-password --gecos '' appuser && \
+RUN chmod +x start.sh && \
+    adduser --disabled-password --gecos '' appuser && \
     chown -R appuser:appuser /app
+
 USER appuser
 
 EXPOSE 8000
 
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "start.sh"]
 
 FROM base AS test
 
