@@ -46,8 +46,21 @@ This service sends you an email (likely to your spam folder) via Resend.
 
 ```bash
 cp .env.example .env
-# Edit `.env` and add your `RESEND_API_KEY` if you want to send emails. IF NOT, it will log them to the console. This parameter is optional
 ```
+
+## Production (Railway)
+
+### Environment configuration
+
+I decided to deploy it on Railway. You must define the following environment variables:
+
+* `SENDGRID_API_KEY`: your SendGrid API key (required to send emails)
+* `APP_ENV=production`: enables production mode
+
+These variables should be set directly in the Railway dashboard or any other cloud provider.
+
+Once configured, deploy the service normally. In production, emails will be sent via SendGrid.
+
 
 ### 2. Start services
 
