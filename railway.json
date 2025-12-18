@@ -6,7 +6,6 @@
     "dockerfileTarget": "production"
   },
   "deploy": {
-    "startCommand": "sh start.sh",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",

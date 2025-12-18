@@ -30,17 +30,15 @@ COPY alembic/ ./alembic/
 RUN uv sync --no-dev --no-install-project
 
 COPY src/ ./src/
-COPY start.sh ./
 
-RUN chmod +x start.sh && \
-    adduser --disabled-password --gecos '' appuser && \
+RUN adduser --disabled-password --gecos '' appuser && \
     chown -R appuser:appuser /app
 
 USER appuser
 
 EXPOSE 8000
 
-CMD ["sh", "start.sh"]
+CMD ["sh", "-c", "uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000"]
 
 FROM base AS test
 
