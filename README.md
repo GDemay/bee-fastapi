@@ -158,4 +158,43 @@ just format          # Format code
 ```
 
 
-# bee-fastapi
+# Demo
+
+### Health Check Endpoint
+
+Check if the service is running:
+
+```
+GET /health
+```
+
+![Health Endpoint Screenshot](https://github.com/user-attachments/assets/21fe1894-1aa0-4fba-9da8-351a80b8a39c)
+
+---
+
+### Register a New Account
+
+Use the registration endpoint to create a new account:
+
+![Register Screenshot](https://github.com/user-attachments/assets/2a88d983-ca55-4ed0-abbc-f3961ffc64c9)
+
+---
+
+### Activate Account
+
+Activate your account using the code sent via email:
+
+![Activate Account Screenshot](https://github.com/user-attachments/assets/2a88d983-ca55-4ed0-abbc-f3961ffc64c9)
+
+Here’s a cleaner, well-formatted version of your **Edge Cases** section for the README:
+
+
+### Edge Cases
+
+* **User already activated**
+* **User already exists**
+* **Email already exists**
+* **Invalid email format**
+* **Password not complex enough or too short**
+* **Invalid activation code**
+* **User not found after update**
