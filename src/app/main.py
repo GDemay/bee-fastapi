@@ -83,7 +83,7 @@ def create_app() -> FastAPI:
     @app.get("/health", tags=["health"])
     @app.get("/", tags=["health"])
     async def health_check() -> dict[str, str]:
-        return {"status": "healthy", "version": "1.0.0"}
+        return {"status": "alive", "version": "1.0.0"}
 
     app.include_router(users_router)
 
