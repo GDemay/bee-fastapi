@@ -1,6 +1,7 @@
 # User Registration API
 
 Production-ready FastAPI application for user registration with email verification using Resend.
+Project is available online: https://bee-fastapi-development.up.railway.app/ 
 
 ## Architecture
 
