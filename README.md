@@ -1,7 +1,9 @@
 # User Registration API
 
 Production-ready FastAPI application for user registration with email verification using Resend.
-Project is available online: https://bee-fastapi-development.up.railway.app/ 
+
+Project is available online: [https://bee-fastapi-development.up.railway.app/](https://bee-fastapi-development.up.railway.app/).
+This service sends you an email (likely to your spam folder) via Resend.
 
 ## Architecture
 
@@ -37,7 +39,6 @@ Project is available online: https://bee-fastapi-development.up.railway.app/
 
 - Docker & Docker Compose
 - [just](https://github.com/casey/just) (task runner)
-- Resend API key (get one at https://resend.com)
 
 ## Local Development
 
@@ -45,11 +46,15 @@ Project is available online: https://bee-fastapi-development.up.railway.app/
 
 ```bash
 cp .env.example .env
-# Edit .env and add your RESEND_API_KEY
+# Edit `.env` and add your `RESEND_API_KEY` if you want to send emails. IF NOT, it will log them to the console. This parameter is optional
 ```
 
 ### 2. Start services
 
+```bash
+docker compose up -d
+```
+or
 ```bash
 just up
 ```
@@ -74,40 +79,11 @@ just test
 ```bash
 just down
 ```
-
-## Production (Railway)
-
-### 1. Create Railway project
+or
 
 ```bash
-railway login
-railway init
+docker compose down
 ```
-
-### 2. Add PostgreSQL
-
-```bash
-railway add --plugin postgresql
-```
-
-### 3. Set environment variables
-
-```bash
-railway variables set APP_ENV=production
-railway variables set RESEND_API_KEY=re_your_key
-railway variables set RESEND_FROM_EMAIL=noreply@yourdomain.com
-```
-
-### 4. Deploy
-
-```bash
-railway up
-```
-
-Railway will:
-- Build the Docker image
-- Run migrations automatically (via start command)
-- Start the API
 
 ## API Endpoints
 
@@ -166,9 +142,7 @@ just test            # Run tests
 just lint            # Check code style
 just lint-fix        # Fix code style
 just format          # Format code
-just migrate         # Run migrations
-just migration NAME  # Create new migration
-just migrate-down    # Rollback one migration
-just shell           # Open shell in API container
 ```
+
+
 # bee-fastapi
