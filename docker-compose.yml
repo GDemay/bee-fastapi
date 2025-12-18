@@ -1,0 +1,104 @@
+services:
+  api:
+    build:
+      context: .
+      target: development
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/user_registration
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL:-noreply@example.com}
+      - ACTIVATION_CODE_EXPIRY_SECONDS=60
+    volumes:
+      - ./src:/app/src
+      - ./alembic:/app/alembic:ro
+      - ./tests:/app/tests
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  migrate:
+    build:
+      context: .
+      target: development
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/user_registration
+    command: ["uv", "run", "alembic", "upgrade", "head"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=user_registration
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d user_registration"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  test:
+    build:
+      context: .
+      target: test
+    environment:
+      - APP_ENV=test
+      - DATABASE_URL=postgresql://postgres:postgres@db-test:5432/user_registration_test
+      - ACTIVATION_CODE_EXPIRY_SECONDS=60
+    depends_on:
+      db-test:
+        condition: service_healthy
+      migrate-test:
+        condition: service_completed_successfully
+    profiles:
+      - test
+
+  migrate-test:
+    build:
+      context: .
+      target: development
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db-test:5432/user_registration_test
+    command: ["uv", "run", "alembic", "upgrade", "head"]
+    depends_on:
+      db-test:
+        condition: service_healthy
+    profiles:
+      - test
+
+  db-test:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=user_registration_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d user_registration_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - test
+
+volumes:
+  postgres_data:
